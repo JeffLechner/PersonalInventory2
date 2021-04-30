@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Home
+{% endblock %}
+
+{% block content %}
+	 <ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+         <li><a href="/dashboard">Dashboard</a></li>
+         <li><a href="/viewPlace/{{form.area.place.id}}">{{form.area.place.name}}</a></li>
+		 <li><a href="/viewArea/{{form.area.id}}">{{form.area.name}}</a></li>
+		 <li><a>{{form.name}}</a></li>
+	 </ul>
+
+		<div class="container">
+		<form method="post" enctype="multipart/form-data">
+			 {{ form.non_field_errors }}
+			 {% csrf_token %}
+			<label>Name</label>
+		 	<input name="name" placeholder="{{form.name}}" value="{{form.name}}"/>
+			<br/>
+			<br/>
+			<label>Image</label>
+			<img src="{{form.image.url}}" width="120px" height="120px">
+			<br/>
+			<br/>
+			<input name="image" type="file" accept="image/png, image/jpeg">
+
+			<br/>
+			<br/>
+			<button type="submit" class="btn-blue">Update</button>
+		</form>
+			<button class="btn-danger"><a href="/viewArea/{{form.area.id}}">Cancel</a></button>
+			</div>
+
+
+
+{% endblock content %}

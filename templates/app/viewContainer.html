@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+  		<li><a href="/dashboard">Dashboard</a></li>
+	    <li><a href="/viewPlace/{{container.area.place.id}}">{{container.area.place.name}}</a></li>
+		<li><a href="/viewArea/{{container.area.id}}">{{ container.area.name }}</a></li>
+		<li>{{container.name}}</li>
+</ul>
+
+
+<a class=" float-right btn-sm">
+	<i></i>
+</a>
+
+<h1 class="text-center">{{ container.name }}</h1>
+
+<a href='/viewArea/{{container.area.id}}' type="button" class="btn btn-grey">Back</a>
+<a type="button" class="btn btn-danger" href ="/deleteContainer/{{container.id}}">Delete</a>
+<hr />
+
+<a type="button" class="btn btn-outline-success btn-floating float-right btn-sm" href ="/addItem/{{container.id}}?r=/viewContainer/{{container.id}}">
+	<i class="fa fa-plus"> Item</i>
+</a>
+
+<a type="button" class="btn btn-outline-warning btn-floating float-right btn-sm" href ="/addCategory/{{container.id}}">
+	<i class="fa fa-plus"> Category</i>
+</a>
+
+<section>
+	<h2 class="text-left">Items</h2>
+	<table class="table table-hover">
+
+	  <thead>
+	    <tr>
+	      <td>Name</td>
+	      <td>Value</td>
+	      <td>Category</td>
+	      <td>Actions</td>
+	      <td></td>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    {% for item in items %}
+	      <tr>
+	        <td>{{ item.name }}</td>
+	        <td>{{ item.value }}</td>
+	        <td>{{ item.category.name }}</td>
+	        <td>
+	          <button class="btn btn-warning" type="button" >
+				  <a href="/container/{{container.id}}/editItem/{{item.itemId}}">Edit</a>
+	          </button>
+
+
+	        </td>
+
+	        <td>
+	          <a type="button" class="btn btn-danger" href ="/deleteItem/{{item.itemId}}?r=/viewContainer/{{container.id}}">Delete</a>
+		        {% if item.lentTo is not None %}
+		          <a type="button" class="btn btn-primary btn-md" href="/returnItem/{{item.itemId}}?r=/viewContainer/{{container.id}}">Return</a>
+						{% else %}
+	            <a type="button" class="btn btn-light-green btn-md" href="/lendItem/{{item.itemId}}?r=/viewContainer/{{container.id}}">Lend</a>
+	          {%endif%}
+
+		        {% if item.lentToFriend %}
+	            <span class="badge success">Lent to {{item.lentTo}}</span>
+	          {% elif item.lentTo is not None %}
+	            <span class="badge bg-secondary">Lent to {{item.lentTo}}</span>
+	          {%endif%}
+	        </td>
+	      </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Dashboard
+{% endblock %}
+
+{% block content %}
+<ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+  		<li>Dashboard</li>
+</ul>
+<div style="display:flex;" class="md-form">
+	<div style="flex-grow:1"></div>
+	<form action="{%url 'users:searchItems'%}" method="post">
+		{% csrf_token %}
+		<input type="text" name="query">
+    <a onclick="this.parentNode.submit()" type="button" class="btn btn-outline-primary btn-floating float-right btn-sm">
+      <i class="fa fa-search"></i>
+    </a>
+   </form>
+</div>
+
+{% if messages %}
+	{% for message in messages %}
+	<div class="card border-success mb-3">
+    <div class="card-header text-danger">
+      <p class="card-title">{{ message }}</p>
+    </div>
+	</div>
+  {% endfor %}
+{% endif %}
+
+<section>
+	<h2 class="text-center">Statistics</h2>
+
+  <div class="row">
+<!--	  Total Item Value-->
+    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between px-md-1">
+            <div class="align-self-center">
+              <i class="fa fa-money text-warning fa-4x"></i>
+            </div>
+            <div class="text-end">
+              <h3>{{ totalValue }}</h3>
+              <p class="mb-0">Total Value</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--	  Total Items-->
+    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between px-md-1">
+            <div class="align-self-center">
+              <i class="fa fa-taxi text-success fa-3x"></i>
+            </div>
+            <div class="text-end">
+              <h3><span class="text-primary">{{ items|length }}</span></h3>
+              <p class="mb-0">Total Items</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--	  Total Areas-->
+    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between px-md-1">
+            <div class="align-self-center">
+              <i class="fa fa-industry text-danger fa-3x"></i>
+            </div>
+            <div class="text-end">
+              <h3><span class="text-primary">{{ areas|length }}</span></h3>
+              <p class="mb-0">Total Areas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--	  Total Spent **UNIMPLEMENTED**-->
+    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between px-md-1">
+            <div class="align-self-center">
+              <i class="fa fa-usd text-primary fa-3x"></i>
+            </div>
+            <div class="text-end">
+              <h3>423<span class="text-primary">$</span></h3>
+              <p class="mb-0">Total Spent</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--    My Places centered header-->
+<div style="display:flex;">
+	<div style="flex-grow:5;"></div>
+	<h2 class="text-center" style="flex-grow:0;">My Places</h2>
+	<div style="flex-grow:4.17;">
+		<a type="button" class="btn btn-outline-success btn-floating float-right btn-sm" href ="{% url 'users:addPlace' %}">
+			<i class="fa fa-plus"></i>
+		</a>
+	</div>
+</div>
+
+
+{% for places in orderedPlaces %}
+<div class="row">
+  <div class="col-xl-12 col-sm-6 col-3 ">
+		<div class="card-deck" >
+			{%for place in places%}
+				<div class="col-md" >
+<!--			If there is not a multiple of 3 of places, add empty placeholders-->
+	        {%if place is not None %}
+					  <div class="view overlay">
+				      <img class="card-img-top" src="{{place.image.url}}" height="240px" width="10px"
+					      alt="Card image cap">
+					    <a href="#!">
+					      <div class="mask rgba-white-slight"></div>
+					    </a>
+					  </div>
+
+					  <div class="card-body">
+					    <h4 class="card-title">{{ place.name }}</h4>
+					    <a type="button" class="btn btn-light-blue btn-md" href ="/viewPlace/{{place.id}}">View</a>
+                        <a type="button" class="btn btn-light-green btn-md" href ="/editPlace/{{place.id}}">Edit</a>
+					  </div>
+	        {%endif%}
+				</div>
+			{%endfor%}
+		</div>
+  </div>
+</div>
+{%endfor%}
+
+{% endblock content %}

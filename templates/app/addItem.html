@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Dashboard
+{% endblock %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+  		<li><a href="/dashboard">Dashboard</a></li>
+	    <li><a href="/viewPlace/{{container.area.place.id}}">{{container.area.place.name}}</a></li>
+		<li><a href="/viewArea/{{container.area.id}}">{{ container.area.name }}</a></li>
+		<li><a href="{{r}}">{{container.name}}</a></li>
+		<li>Add Item</li>
+</ul>
+
+
+<div class="container center">
+	<div class="card-block">
+		<div class="text-center" style="margin-bottom:32px;">
+	      <h3>Add Item</h3>
+	      <hr class="mt-2 mb-2">
+	  </div>
+
+	  <form method="post" enctype="multipart/form-data">
+    	{{ form.non_field_errors }}
+    	{% csrf_token %}
+    	{{form.as_p}}
+		  <label for="category">Select Category:</label>
+		  <select id="category" name="category">
+			{%for x in categories%}
+			  <option value="{{x.id}}" selected>{{x.name}}</option>
+		    {% endfor %}
+		  </select>
+		<br/>
+      	<button class="btn-blue" type="submit">Add</button>
+	  </form>
+		<button class="btn-danger"><a href="/viewContainer/{{container.id}}">Cancel</a></button>
+	</div>
+</div>
+{% endblock content %}

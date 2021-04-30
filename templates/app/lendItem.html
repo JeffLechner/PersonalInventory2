@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 floating-center">
+	<div class="row">
+		<div class="col-md-2"></div>
+
+		<div class="col-md-4 mt-5 card">
+			<form method="post" class="">
+				<p class="h4 mb-4" style="padding-top:16px;">Lend Item</p>
+				{% csrf_token %}
+
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="toFriend" id="id_toFriend" value="false">
+					<label class="form-check-label" for="id_toFriend">
+						Lent to friend?
+					</label>
+				</div>
+
+				<br/>
+
+				<label for="id_name" class="active">Name</label>
+				<input type="text" name="name" maxlength="100" required="true" id="id_name">
+				<button type="submit" class="btn btn-success">Lend</button>
+			</form>
+		</div>
+
+		<div class="col-md-2"></div>
+	</div>
+</div>
+
+{% endblock %}

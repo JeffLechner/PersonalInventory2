@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a class=" float-right btn-sm">
+	<i></i>
+</a>
+
+<h1 class="text-center">Are you sure you want to delete {{ container.name }}?</h1>
+
+<br/>
+<hr />
+<br/>
+
+<form method="POST">
+	{% csrf_token %}
+	<div style="display:flex;" class="row">
+		<a style="flex-grow:1;" type="button" class="btn btn-success" href="{{r}}">Back</a>
+		<button style="flex-grow:1;" type=submit class="btn btn-danger">Delete</button>
+	</div>
+</form>
+
+{% endblock content %}

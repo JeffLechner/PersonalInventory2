@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+  		<li><a href="/dashboard">Dashboard</a></li>
+	    <li><a href="/viewPlace/{{container.area.place.id}}">{{container.area.place.name}}</a></li>
+		<li><a href="/viewArea/{{container.area.id}}">{{container.area.name}}</a></li>
+		<li><a href="/viewContainer/{{container.id}}">{{container.name}}</a></li>
+		<li>Add Category</li>
+</ul>
+<center>
+	<h1>Category</h1>
+	<hr/>
+<form method="post" enctype="multipart/form-data">
+	{{ form.non_field_errors }}
+	{% csrf_token %}
+	{{form.as_p}}
+
+	<button type="submit" class="btn-blue">Add</button>
+
+</form>
+	<button class="btn-danger"><a>Cancel</a></button>
+</center>
+
+{% endblock content %}>

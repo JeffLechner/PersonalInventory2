@@ -1,0 +1,79 @@
+{% load static %}
+
+<html lang="en">
+
+	<head>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <meta http-equiv="x-ua-compatible" content="ie=edge">
+	  <title>Personal Inventory</title>
+	  <!-- Font Awesome -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	  <!-- Bootstrap core CSS -->
+	  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+	  <!-- Material Design Bootstrap -->
+	  <link href="/static/css/mdb.min.css" rel="stylesheet">
+	  <!-- Your custom styles (optional) -->
+	  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<style>
+		ul.breadcrumb {
+  		padding: 10px 16px;
+  		list-style: none;
+  		background-color: #eee;
+		}
+		ul.breadcrumb li {
+  		display: inline;
+  		font-size: 18px;
+		}
+		ul.breadcrumb li+li:before {
+  		padding: 8px;
+  		color: black;
+  		content: "/\00a0";
+		}
+		ul.breadcrumb li a {
+  		color: #0275d8;
+  		text-decoration: none;
+		}
+		ul.breadcrumb li a:hover {
+  		color: #01447e;
+  		text-decoration: underline;
+		}
+	</style>
+	<body>
+	  {% if not excludeNavbar %}
+	    {% include "navbar.html" %}
+	  {% endif %}
+	    <div style="height: 100vh" class="container">
+
+	      {% block content %}
+	        <div class="flex-center flex-column">
+	            <h1 class="animated fadeIn mb-4">Personal Inventory</h1>
+	        </div>
+	      {% endblock %}
+	    </div>
+
+
+	  {% block script %}
+	  {% endblock %}
+
+	  <!-- JQuery -->
+	  <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+	  <!-- Bootstrap tooltips -->
+	  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+	  <!-- Bootstrap core JavaScript -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>    <!-- MDB core JavaScript -->
+		<!-- Material Bootstrap-->
+	  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+	</body>
+
+</html>
+
+
+

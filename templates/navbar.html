@@ -1,0 +1,64 @@
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark secondary-color mb-1">
+
+	<div class="container">
+    <a class="navbar-brand" href="{% url 'users:home' %}">Personal Inventory</a>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'users:home' %}">Home </a>
+      </li>
+
+      {% if request.user.is_authenticated %}
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'users:dashboard' %}">Dashboard</a>
+			</li>
+			{% else %}
+
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'users:sign-up' %}">Sign up</a>
+			</li>
+			{% endif %}
+
+    </ul>
+
+    {% if user.is_authenticated %}
+    <div class="my-1 mr-3">
+        <a class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <div class="my-1 mr-3">
+      <div class="white-text">
+				<i class="fa fa-user" aria-hidden="true"></i>
+				{% if profile is not None %}
+				  <a href="{% url 'users:selectProfile' %}?f=t">{{ profile.name }}</a>
+				{% else %}
+				  {{ request.user }}
+				{% endif %}
+      </div>
+        {% else %}
+          <a class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+	</div>
+</nav>
+<br/>
+<style>
+a:link {
+  color: white;
+}
+
+a:visited {
+  color: white;
+}
+
+a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+a:active {
+  color: white;
+}
+
+</style>

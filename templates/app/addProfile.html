@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Dashboard
+{% endblock %}
+
+{% block content %}
+<ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+  		<li><a href="/dashboard">Dashboard</a></li>
+		<li><a href="/selectProfile?f=t">Profile</a></li>
+		<li>Add Profile</li>
+</ul>
+
+
+<div class="container center">
+	<div class="card-block">
+		<div class="text-center" style="margin-bottom:32px;">
+      <h3>Add Profile</h3>
+      <hr class="mt-2 mb-2">
+    </div>
+
+	  <form method="post">
+	    {{ form.non_field_errors }}
+	    {% csrf_token %}
+	    <div class="md-form">
+	      {{form.as_p}}
+	    </div>
+
+	    <div class="text-center">
+	      <button type="submit" class="btn btn-deep-purple">Add</button>
+		    <a href='/selectProfile?f=t' type="button" class="btn btn-grey">Cancel</a>
+	    </div>
+	  </form>
+	</div>
+</div>
+{% endblock content %}>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+  		<li><a href="/dashboard">Dashboard</a></li>
+		<li>{{ place.name }}</li>
+</ul>
+
+<a class=" float-right btn-sm">
+	<i></i>
+</a>
+
+<h1 class="text-center">{{ place.name }}</h1>
+<a href='/dashboard' type="button" class="btn btn-grey">Back</a>
+<a type="button" class="btn btn-danger" href ="/deletePlace/{{place.id}}">Delete</a>
+<hr/>
+
+<a type="button" class="btn btn-outline-success btn-floating float-right btn-sm" href ="/addArea/{{place.id}}?r=/viewPlace/{{place.id}}">
+	<i class="fa fa-plus"></i>
+</a>
+
+<section>
+	<h2 class="text-left">Areas</h2>
+	{% for areas in orderedAreas %}
+	  <div class="row">
+	    <div class="col-xl-12 col-sm-6 col-3 ">
+				<div class="card-deck" >
+					{%for area in areas%}
+						<div class="col-md" >
+							{%if area is not None %}
+							  <div class="view overlay">
+						      <img class="card-img-top" src="{{area.image.url}}" height="240px" width="10px"
+							      alt="Card image cap">
+							    <a href="#!">
+							      <div class="mask rgba-white-slight"></div>
+							    </a>
+							  </div>
+							  <div class="card-body">
+							    <h4 class="card-title">{{ area.name }}</h4>
+							    <a type="button" class="btn btn-light-blue btn-md" href ="/viewArea/{{area.id}}">View</a>
+							  	<a type="button" class="btn btn-light-green btn-md" href ="/editArea/{{area.id}}">Edit</a>
+							  </div>
+							{%endif%}
+						</div>
+					{%endfor%}
+				</div>
+		  </div>
+		</div>
+	{%endfor%}
+	</section>
+
+{% endblock content %}

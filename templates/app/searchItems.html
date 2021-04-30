@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="md-form float-right">
+	<form action="{%url 'users:searchItems'%}" method="post">
+		{% csrf_token %}
+		<input type="text" name="query">
+		<a onclick="this.parentNode.submit()" type="button" class="btn btn-outline-primary btn-floating float-right btn-sm">
+			<i class="fa fa-search"></i>
+		</a>
+	</form>
+</div>
+
+{% if messages %}
+	{% for message in messages %}
+		<div class="card border-success mb-3">
+		  <div class="card-header text-danger">
+		    <p class="card-title">{{ message }}</p>
+		  </div>
+		</div>
+  {% endfor %}
+{% endif %}
+
+<h2 class="text-center">Results</h2>
+<table class="table table-hover">
+
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Value</td>
+      <td>Category</td>
+      <td>Actions</td>
+      <td></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for item in items %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.value }}</td>
+        <td>{{ item.category }}</td>
+        <td>
+          <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ item.itemId }}" aria-expanded="false" aria-controls="collapse_{{ item.itemId }}">
+            Edit
+          </button>
+
+          <div class="collapse" id="collapse_{{ item.itemId }}" style="z-index:1000;position:absolute;">
+            <div class="card card-body">
+              <form method="POST" action="{% url 'users:dashboard' %}?r=users:dashboard" class="item-form">{% csrf_token %}
+                <p><label for="id_name" class="">Name:</label> <input type="text" name="name" maxlength="100" required="" id="id_name" value="{{ item.name }}"></p>
+                <p><label for="id_value">Value:</label> <input type="number" name="value" required="" id="id_value" value="{{ item.value }}"></p>
+                <p><label for="id_category">Category:</label> <input type="text" name="category" maxlength="100" required="" id="id_category" value="{{ item.category }}"></p>
+
+	              <button type="submit" class="save btn btn-default waves-effect waves-light">Update</button>
+               </form>
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <button class="btn btn-danger" type="button" onclick="delete({{ profile.id }}, {{ profile.name }})">
+            Delete
+          </button>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  		<li><a href="/">Home</a></li>
+  		<li><a href="/dashboard">Dashboard</a></li>
+	    <li><a href="{{r}}">{{place_name}}</a></li>
+		<li>Add Area</li>
+</ul>
+
+<div class="container center">
+	<div class="card-block">
+		<div class="text-center" style="margin-bottom:32px;">
+			<h3>Add Area</h3>
+			<hr class="mt-2 mb-2"/>
+
+		</div>
+
+		<form method="post" enctype="multipart/form-data">
+    		{{ form.non_field_errors }}
+    		{% csrf_token %}
+    		{{form.as_p}}
+      		<button type="submit">Add</button>
+  		</form>
+	</div>
+</div>
+{% endblock content %}>
