@@ -26,10 +26,10 @@
 	<h2 class="text-left">Containers</h2>
 	{% for containers in orderedContainers %}
 	  <div class="row">
-	    <div class="col-xl-12 col-sm-6 col-3 ">
+	    <div class="col-xl-12 col-sm-6 col-md-12">
 				<div class="card-deck" >
 					{%for container in containers%}
-						<div class="col-md" >
+						<div class="col-md-6 col-sm-12 col-xl-4" >
 							{%if container is not None %}
 							  <div class="view overlay">
 						      <img class="card-img-top" src="{{container.image.url}}"

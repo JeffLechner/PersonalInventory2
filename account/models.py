@@ -42,14 +42,17 @@ class Category(models.Model):
     name = models.CharField(max_length=70)
     container = models.ForeignKey(Container, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class InventoryItem(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     itemId = models.UUIDField(primary_key=True)
     container = models.ForeignKey(Container, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    value = models.IntegerField() #10
-    current_value = models.IntegerField() #10
+    value = models.DecimalField(max_digits=10, decimal_places=2)
+    current_value = models.DecimalField(max_digits=10, decimal_places=2) #10
     # Interval of days by which the value will increase
     interval_of_days = models.IntegerField() #1
     # Ratio of increasing value after the interval

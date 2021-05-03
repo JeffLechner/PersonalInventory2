@@ -62,10 +62,16 @@ class SignUpForm(UserCreationForm):
 
 
 class InventoryItemForm(forms.ModelForm):
-
+	name = forms.CharField(max_length=70, required=True, help_text='', label='Name')
+	image= forms.ImageField(required=True, label="image")
+	value=forms.IntegerField(required=True, label="Initial Value")
+	extraDetails = forms.CharField(max_length=300, required=False, label='Details')
+	increasing_ratio_in_percentage= forms.IntegerField(required=True, label="Increase by Percent")
+	interval_of_days = forms.IntegerField(required=True, label="Interval of days")
+	current_value = forms.IntegerField(required=True, label="Current Value", help_text="Increase Item Value overtime")
 	class Meta:
 		model = InventoryItem
-		fields = ('name', 'image', 'value', 'extraDetails', 'increasing_ratio_in_percentage', 'interval_of_days')
+		fields = ('name',  'category', 'image', 'extraDetails', 'value', 'current_value', 'increasing_ratio_in_percentage', 'interval_of_days')
 
 
 class ContainerForm(forms.ModelForm):
@@ -97,8 +103,17 @@ class SelectProfileForm(forms.Form):
 	id = forms.UUIDField()
 
 
+SEARCH_CHOICES= [
+    ('place', 'Place'),
+    ('area', 'Area'),
+    ('container', 'Container'),
+    ('item', 'Items'),
+    ]
+
+
 class SearchItemsForm(forms.Form):
 	query = forms.CharField(max_length=100)
+	favorite_fruit = forms.CharField(label='Select Search type?', widget=forms.Select(choices=SEARCH_CHOICES))
 
 
 class LendForm(forms.Form):

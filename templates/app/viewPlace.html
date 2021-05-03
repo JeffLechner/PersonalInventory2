@@ -24,10 +24,10 @@
 	<h2 class="text-left">Areas</h2>
 	{% for areas in orderedAreas %}
 	  <div class="row">
-	    <div class="col-xl-12 col-sm-6 col-3 ">
+	    <div class="col-xl-12 col-sm-6 col-md-12 ">
 				<div class="card-deck" >
 					{%for area in areas%}
-						<div class="col-md" >
+						<div class="col-md-6 col-sm-12 col-xl-4" >
 							{%if area is not None %}
 							  <div class="view overlay">
 						      <img class="card-img-top" src="{{area.image.url}}" height="240px" width="10px"

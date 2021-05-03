@@ -13,7 +13,21 @@
 	<div style="flex-grow:1"></div>
 	<form action="{%url 'users:searchItems'%}" method="post">
 		{% csrf_token %}
-		<input type="text" name="query">
+<p>Lend status <input type="checkbox"  name="lend" value="lend"></p>
+
+        <p>Select Object Type
+            <select name="category" id="category">
+  <option value="place">Place</option>
+  <option value="area">Area</option>
+  <option value="container">Container</option>
+  <option value="item">Item</option>
+</select>
+        </p>
+
+
+
+		<input type="text" name="query" placeholder="Search by name">
+
     <a onclick="this.parentNode.submit()" type="button" class="btn btn-outline-primary btn-floating float-right btn-sm">
       <i class="fa fa-search"></i>
     </a>
@@ -35,7 +49,7 @@
 
   <div class="row">
 <!--	  Total Item Value-->
-    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+    <div class="col-xl-3 col-sm-3 col-12 mb-4">
       <div class="card">
         <div class="card-body">
           <div class="d-flex justify-content-between px-md-1">
@@ -50,6 +64,7 @@
         </div>
       </div>
     </div>
+
 <!--	  Total Items-->
     <div class="col-xl-3 col-sm-6 col-12 mb-4">
       <div class="card">
@@ -91,8 +106,47 @@
               <i class="fa fa-usd text-primary fa-3x"></i>
             </div>
             <div class="text-end">
-              <h3>423<span class="text-primary">$</span></h3>
+              <h3>{{totalValue}}<span class="text-primary">$</span></h3>
               <p class="mb-0">Total Spent</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   <!--	  -->
+    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between px-md-1">
+            <div class="align-self-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-house-door text-danger fa-3x" viewBox="0 0 16 16">
+                    <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                </svg>
+
+            </div>
+            <div class="text-end">
+              <h3>{{valuable_area.name}}</h3>
+                <p>{{area_sum}}<span class="text-primary">$</span></p>
+              <p class="mb-0">Most Valuable Area</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+         <!--	  -->
+    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between px-md-1">
+            <div class="align-self-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-box text-warning fa-3x" viewBox="0 0 16 16" >
+                    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                </svg>
+            </div>
+            <div class="text-end">
+              <h3>{{valuable_container.name}}</h3>
+                <p>{{cont_sum}}<span class="text-primary">$</span></p>
+              <p class="mb-0">Most Valuable Container</p>
             </div>
           </div>
         </div>
@@ -115,10 +169,10 @@
 
 {% for places in orderedPlaces %}
 <div class="row">
-  <div class="col-xl-12 col-sm-6 col-3 ">
+  <div class="col-xl-12 col-sm-6 col-md-12 ">
 		<div class="card-deck" >
 			{%for place in places%}
-				<div class="col-md" >
+				<div class="col-md-6 col-sm-12 col-xl-4" >
 <!--			If there is not a multiple of 3 of places, add empty placeholders-->
 	        {%if place is not None %}
 					  <div class="view overlay">

@@ -136,20 +136,53 @@ def home_view(request):
 @requireSelectedProfile
 def dashboard_view(request, profile):
     places = Place.objects.filter(profile=profile)
-    items = InventoryItem.objects.filter(profile=profile)
+    all_items = InventoryItem.objects.filter(profile=profile)
     totalValue = 0
-    for item in items:
+    for item in all_items:
         totalValue += item.value
+    currentValue = 0
+    for item in all_items:
+        currentValue += item.current_value
+    containers = Container.objects.filter(profile=profile)
+    cont_sum = 0
+    valuable_container = None
+    for container in containers:
+        items = InventoryItem.objects.filter(container=container)
+        sum = 0
+        for item in items:
+            sum = sum+item.value
+        if cont_sum < sum:
+            cont_sum = sum
+            valuable_container = container
     areas = Area.objects.filter(profile=profile)
+    valuable_area = None
+    area_sum = 0
+    for area in areas:
+        a_containers = Container.objects.filter(area=area)
+        sum_containers = 0
+        for container in a_containers:
+            items = InventoryItem.objects.filter(container=container)
+            item_sum = 0
+            for item in items:
+                item_sum = item_sum+item.value
+            sum_containers = sum_containers+item_sum
+        if area_sum < sum_containers:
+            area_sum = sum_containers
+            valuable_area = area
 
     return render(request, 'app/dashboard.html', {
         'profile': profile,
-        'items': items,
+        'items': all_items,
         'totalValue': totalValue,
         'form': InventoryItemForm(),
         'searchItemsForm': SearchItemsForm(),
         'orderedPlaces': group(places),
-        'areas': areas
+        'areas': areas,
+        'currentValue': currentValue,
+        'valuable_container': valuable_container,
+        'valuable_area': valuable_area,
+        'area_sum': area_sum,
+        'cont_sum': cont_sum
     })
 
 
@@ -307,7 +340,7 @@ def viewContainer(request, profile, pk):
     if container.profile != profile:
         return redirect('/dashboard')
 
-    items = InventoryItem.objects.filter(profile=profile)
+    items = InventoryItem.objects.filter(container=container)
 
     return render(request, 'app/viewContainer.html', {
         'profile': profile,
@@ -386,14 +419,10 @@ def addItem(request, profile, pk):
     if request.method == 'POST':
         form = InventoryItemForm(request.POST, request.FILES)
         if form.is_valid():
-
             item = form.save(commit=False)
-            category = Category.objects.get(id=request.POST['category'])
-            item.category = category
             item.container = container
             item.profile = profile
             item.itemId = uuid.uuid4()
-            item.current_value = item.value
             item.save()
             return doUrlRedirect(request)
 
@@ -427,34 +456,20 @@ def addCategory(request, pk):
 @login_required
 @requireSelectedProfile
 def editItem(request, profile, c_id, i_id):
-    categories = Category.objects.filter(container=c_id)
     old = InventoryItem.objects.get(itemId=i_id)
     if old.profile != profile:
         return doUrlRedirect(request)
     if request.method == 'POST':
-        form = InventoryItemForm(request.POST, request.FILES, initial={'name': old.name, 'image': old.image})
+        form = InventoryItemForm(request.POST, request.FILES, instance=old)
         if form.is_valid():
             item = form.save(commit=False)
-            category = Category.objects.get(id=request.POST['category'])
-            item.category = category
-            item.itemId = i_id
-            item.profile = profile
-            item.container = old.container
-            item.updated_at = django.utils.timezone.now()
-            if old.value != item.value:
-                item.current_value = item.value
-            else:
-                item.current_value = old.current_value
             item.save()
-
             return redirect("/viewContainer/" + str(c_id))
-
     return render(request, 'app/editItem.html', {
-        'item': old,
         'container': c_id,
-        'categories': categories
+        'form': InventoryItemForm(instance=old),
+        'image': old.image
     })
-
 
 @login_required
 @requireSelectedProfile
@@ -513,18 +528,32 @@ def returnItem(request, profile, pk):
 @login_required
 @requireSelectedProfile
 def searchItems(request, profile):
-    if request.method == 'POST':
-        form = SearchItemsForm(request.POST)
-        if form.is_valid():
-            query = form.cleaned_data['query']
-
-            items = InventoryItem.objects.filter(profile=profile, name__lower__contains=query)
-
-            return render(request, 'app/searchItems.html', {
-                'profile': profile,
-                'items': items,
-                'query': query,
-                'searchItemsForm': form
+    name=request.POST.get('query')
+    category= request.POST.get('category')
+    lend_status = request.POST.get('lend')
+    if category == "place":
+        data = Place.objects.filter(name__contains=name, profile=profile)
+        view_url="viewPlace"
+        edit_url="editPlace"
+    elif category == "area":
+        data = Area.objects.filter(name__contains=name, profile=profile)
+        view_url="viewArea"
+        edit_url="editArea"
+    elif category == "container":
+        data = Container.objects.filter(name__contains=name, profile=profile)
+        view_url="viewContainer"
+        edit_url="editContainer"
+    else:
+        if lend_status == "lend":
+            data = InventoryItem.objects.filter(name__contains=name, profile=profile, lentTo__isnull=False)
+        else:
+            data = InventoryItem.objects.filter(name__contains=name, profile=profile, lentTo__isnull=True)
+        view_url = "editItem"
+        edit_url="editItem"
+    return render(request, 'app/searchItems.html', {
+                'data': data,
+        'orderedData': group(data),
+        'view_url':view_url,
+        "edit_url":edit_url,
             })
-
-    return redirect('users:dashboard')
+    # return redirect('users:dashboard')

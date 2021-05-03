@@ -6,6 +6,42 @@
 
 {% block content %}
 
+<head>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* Full-width input fields */
+input[type=text], input[type=password],select,input[type=email],input[type=url], input[type=number] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: navy;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+</style>
+	</head>
+
+
+
+
 <ul class="breadcrumb">
   		<li><a href="/">Home</a></li>
   		<li><a href="/dashboard">Dashboard</a></li>
@@ -27,12 +63,6 @@
     	{{ form.non_field_errors }}
     	{% csrf_token %}
     	{{form.as_p}}
-		  <label for="category">Select Category:</label>
-		  <select id="category" name="category">
-			{%for x in categories%}
-			  <option value="{{x.id}}" selected>{{x.name}}</option>
-		    {% endfor %}
-		  </select>
 		<br/>
       	<button class="btn-blue" type="submit">Add</button>
 	  </form>
